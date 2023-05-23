@@ -1,0 +1,29 @@
+{
+  "name": "acre-qa-exercise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "lint": "eslint . --ext .ts && tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnzbanda/acre-qa-exercise.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnzbanda/acre-qa-exercise/issues"
+  },
+  "homepage": "https://github.com/johnzbanda/acre-qa-exercise#readme",
+  "devDependencies": {
+    "@playwright-testing-library/test": "^4.5.0",
+    "@playwright/test": "^1.34.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^8.41.0",
+    "playwright": "^1.34.1",
+    "typescript": "^5.0.4"
+  }
+}
