@@ -164,14 +164,6 @@ test.describe('BTL Calculator', () => {
   test.skip('Maximum loan amount shown', async () => {
     //all you need to do here is assert that the text can be seen, do not worry about the calculation for now
   });
-
-  /**
-   * TODO:
-   * Create function for completing form - done
-   * Add extra scenarios - https://docs.google.com/spreadsheets/d/1ideOZT2xXa55bDPA8lF7fdHxG61ob8aet7GW1emh_p4/edit#gid=0
-   * Create function that will figure out calculation for each condition --- TRICKY
-   * Try to figure out all the criteria
-   */
 });
 
 async function assertLoanToValue(propertyValue: number, loanAmount: number) {
