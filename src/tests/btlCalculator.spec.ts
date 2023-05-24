@@ -85,6 +85,26 @@ test.describe('BTL Calculator', () => {
     );
   });
 
+  test('Incorrect values', async () => {
+    const invalidValue = [1000000000, 10000];
+    await btlCalculator.completeForm({
+      propertyValue: invalidValue[0],
+      loanAmount: invalidValue[0],
+      feeAmount: invalidValue[1],
+      monthlyRentalIncome: invalidValue[0],
+      productRate: invalidValue[1],
+    });
+    await expect(btlCalculator.loanToValueText).toHaveText('--- %');
+    await expect(btlCalculator.outcomeResultText).toHaveText(
+      'Please ensure all fields are completed to generate a result',
+    );
+    await expect(btlCalculator.page.locator('#property-value-error-message')).toBeVisible()
+    await expect(btlCalculator.page.locator('#loan-amount-error-message')).toBeVisible()
+    await expect(btlCalculator.page.locator('#monthly-rental-income-error-message')).toBeVisible()
+    await expect(btlCalculator.page.getByText('Enter a value between GBP 0 and GBP 9999')).toBeVisible()
+    await expect(btlCalculator.page.getByText('Enter a value between 0.00 and 50.00')).toBeVisible()
+  })
+
   /**
    * TODO:
    * Create function for completing form - done
