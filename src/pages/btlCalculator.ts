@@ -36,8 +36,8 @@ export class BTLCalculator {
     loanAmount?: number;
     feeAmount?: number;
     monthlyRentalIncome?: number;
-    applicationType?: string | undefined;
-    productType?: string | undefined;
+    applicationType?: string;
+    productType?: string;
     productRate?: number;
     taxRate?: string;
   }) {
@@ -59,5 +59,11 @@ export class BTLCalculator {
     if (value?.taxRate) {
       await this.basicTaxRateDropdown.selectOption(value?.taxRate as string);
     }
+  }
+
+  async calculateLoanToValue(propertyValue: number, loanAmount: number) {
+    const loanToValue = (loanAmount / propertyValue) * 100
+    const roundedNumber = Math.ceil(loanToValue * 100) / 100
+    return roundedNumber.toString() + ' %'
   }
 }
