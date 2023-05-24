@@ -30,4 +30,44 @@ export class BTLCalculator {
     this.loanToValueText = page.locator('#ltv-value');
     this.outcomeResultText = page.locator('#cal-outcome-value');
   }
+
+  async completeForm(value?: {
+    propertyValue?: number;
+    loanAmount?: number;
+    feeAmount?: number;
+    monthlyRentalIncome?: number;
+    applicationType?: string;
+    productType?: string;
+    productRate?: number;
+    taxRate?: string;
+  }) {
+    if (value?.propertyValue) {
+      await this.propertyValueInput.fill(value?.propertyValue.toString() || '');
+    }
+    if (value?.loanAmount) {
+      await this.loanAmountInput.fill(value?.loanAmount.toString() || '');
+    }
+    if (value?.feeAmount) {
+      await this.feeAmountInput.fill(value?.feeAmount.toString() || '');
+    }
+    if (value?.monthlyRentalIncome) {
+      await this.monthlyRentalIncomeInput.fill(
+        value?.monthlyRentalIncome.toString() || '',
+      );
+    }
+    if (value?.applicationType) {
+      await this.applicationTypeDropdown.selectOption(
+        value?.applicationType as string,
+      );
+    }
+    if (value?.productType) {
+      await this.productTypeDropdown.selectOption(value?.productType as string);
+    }
+    if (value?.productRate) {
+      await this.productRateInput.fill(value?.productRate.toString() || '');
+    }
+    if (value?.taxRate) {
+      await this.basicTaxRateDropdown.selectOption(value?.taxRate as string);
+    }
+  }
 }

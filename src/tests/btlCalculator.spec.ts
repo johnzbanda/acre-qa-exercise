@@ -35,4 +35,26 @@ test.describe('BTL Calculator', () => {
       'Please ensure all fields are completed to generate a result',
     );
   });
+
+  test('Complete form', async () => {
+    await btlCalculator.completeForm({
+      propertyValue: 75000,
+      loanAmount: 25000,
+      feeAmount: 5000,
+      monthlyRentalIncome: 5000,
+      productType: '2 year fixed rate',
+      productRate: 50,
+      taxRate: 'No',
+    });
+    await btlCalculator.page.pause()
+    //add expects
+  });
+
+  /**
+   * TODO:
+   * Create function for completing form
+   * Add extra scenarios
+   * Create function that will figure out calculation for each condition --- TRICKY
+   * Try to figure out all the criteria
+   */
 });
