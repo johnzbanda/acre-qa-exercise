@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-//PAGE OBJECT MODEL
+//PAGE OBJECT MODEL - This is where I keep my locators. This is to ensure the test file is not messy. No expects should be inside this file
 export class BTLCalculator {
   readonly page: Page;
   readonly propertyValueInput: Locator;
@@ -31,7 +31,7 @@ export class BTLCalculator {
     this.outcomeResultText = page.locator('#cal-outcome-value');
   }
 
-  async completeForm(value?: {
+  async completeForm(value?: { //complete the form given on the page, should fill/select as needed
     propertyValue?: number;
     loanAmount?: number;
     feeAmount?: number;
@@ -62,7 +62,7 @@ export class BTLCalculator {
     }
   }
 
-  async calculateLoanToValue(propertyValue: number, loanAmount: number) {
+  async calculateLoanToValue(propertyValue: number, loanAmount: number) { //calulate the loan to value. Calculation is (Loan Amount / Property Value) * 100
     const loanToValue = (loanAmount / propertyValue) * 100;
     const roundedNumber = Math.ceil(loanToValue * 100) / 100;
     return roundedNumber.toFixed(2) + ' %';

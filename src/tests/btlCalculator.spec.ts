@@ -4,6 +4,7 @@ import { ApplicationTypes } from '../pages/populator/applicationTypes';
 import { Outcomes } from '../pages/populator/outcomes';
 import { ProductTypes } from '../pages/populator/productTypes';
 
+//https://docs.google.com/spreadsheets/d/1ideOZT2xXa55bDPA8lF7fdHxG61ob8aet7GW1emh_p4/edit#gid=0 - Decision Table
 let page: Page;
 let btlCalculator: BTLCalculator;
 
