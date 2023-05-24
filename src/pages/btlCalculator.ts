@@ -48,6 +48,7 @@ export class BTLCalculator {
       value?.monthlyRentalIncome?.toString() || '',
     );
     if (value?.applicationType) {
+      //need to have if statement for selectOption
       await this.applicationTypeDropdown.selectOption(
         value?.applicationType as string,
       );

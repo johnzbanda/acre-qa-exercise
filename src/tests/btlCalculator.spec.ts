@@ -52,11 +52,7 @@ test.describe('BTL Calculator', () => {
       productRate: 50,
       taxRate: 'No',
     });
-    const loanToValue = await btlCalculator.calculateLoanToValue(
-      propertyValue,
-      loanAmount,
-    );
-    await expect(btlCalculator.loanToValueText).toHaveText(loanToValue);
+    await assertLoanToValue(propertyValue, loanAmount);
     await expect(btlCalculator.outcomeResultText).toHaveText(
       Outcomes.rentalIncomeMet,
     );
@@ -75,11 +71,7 @@ test.describe('BTL Calculator', () => {
       productRate: 50,
       taxRate: 'No',
     });
-    const loanToValue = await btlCalculator.calculateLoanToValue(
-      propertyValue,
-      loanAmount,
-    );
-    await expect(btlCalculator.loanToValueText).toHaveText(loanToValue);
+    await assertLoanToValue(propertyValue, loanAmount);
     await expect(btlCalculator.outcomeResultText).toHaveText(
       Outcomes.loanAmountNotMet,
     );
@@ -98,12 +90,80 @@ test.describe('BTL Calculator', () => {
     await expect(btlCalculator.outcomeResultText).toHaveText(
       'Please ensure all fields are completed to generate a result',
     );
-    await expect(btlCalculator.page.locator('#property-value-error-message')).toBeVisible()
-    await expect(btlCalculator.page.locator('#loan-amount-error-message')).toBeVisible()
-    await expect(btlCalculator.page.locator('#monthly-rental-income-error-message')).toBeVisible()
-    await expect(btlCalculator.page.getByText('Enter a value between GBP 0 and GBP 9999')).toBeVisible()
-    await expect(btlCalculator.page.getByText('Enter a value between 0.00 and 50.00')).toBeVisible()
-  })
+    await expect(
+      btlCalculator.page.locator('#property-value-error-message'),
+    ).toBeVisible();
+    await expect(
+      btlCalculator.page.locator('#loan-amount-error-message'),
+    ).toBeVisible();
+    await expect(
+      btlCalculator.page.locator('#monthly-rental-income-error-message'),
+    ).toBeVisible();
+    await expect(
+      btlCalculator.page.getByText('Enter a value between GBP 0 and GBP 9999'),
+    ).toBeVisible();
+    await expect(
+      btlCalculator.page.getByText('Enter a value between 0.00 and 50.00'),
+    ).toBeVisible();
+  });
+
+  test('Rental income criteria not shown', async () => {
+    const propertyValue = 1000000;
+    const loanAmount = 500000;
+    await btlCalculator.completeForm({
+      propertyValue: propertyValue,
+      loanAmount: loanAmount,
+      feeAmount: 1500,
+      monthlyRentalIncome: 2400,
+      applicationType: ApplicationTypes.remortgageNoBorrowing,
+      productType: ProductTypes.fiveYearFixed,
+      productRate: 10,
+      taxRate: 'Yes (All Applicants)',
+    });
+    await assertLoanToValue(propertyValue, loanAmount);
+    await expect(btlCalculator.outcomeResultText).toContainText(
+      Outcomes.rentalIncomeNotMet,
+    );
+  });
+
+  test('Property value not met', async () => {
+    await btlCalculator.completeForm({
+      propertyValue: 1000,
+      loanAmount: 500000,
+      feeAmount: 5000,
+      monthlyRentalIncome: 1000,
+      applicationType: ApplicationTypes.porting,
+      productType: ProductTypes.twoYearTracker,
+      productRate: 20,
+      taxRate: 'Yes (All Applicants)',
+    });
+    await expect(btlCalculator.outcomeResultText).toContainText(
+      Outcomes.propertyValueNotMet,
+    );
+  });
+
+  test('Loan to value not met', async () => {
+    const propertyValue = 250000;
+    const loanAmount = 500000;
+    await btlCalculator.completeForm({
+      propertyValue: propertyValue,
+      loanAmount: loanAmount,
+      feeAmount: 5000,
+      monthlyRentalIncome: 1000,
+      applicationType: ApplicationTypes.unencumbered,
+      productType: ProductTypes.tenYearFixed,
+      productRate: 20,
+      taxRate: 'No',
+    });
+    await assertLoanToValue(propertyValue, loanAmount);
+    await expect(btlCalculator.outcomeResultText).toContainText(
+      Outcomes.loanToValueNotMet,
+    );
+  });
+
+  test.skip('Maximum loan amount shown', async () => {
+    //all you need to do here is assert that the text can be seen, do not worry about the calculation for now
+  });
 
   /**
    * TODO:
@@ -113,3 +173,11 @@ test.describe('BTL Calculator', () => {
    * Try to figure out all the criteria
    */
 });
+
+async function assertLoanToValue(propertyValue: number, loanAmount: number) {
+  const loanToValue = await btlCalculator.calculateLoanToValue(
+    propertyValue,
+    loanAmount,
+  );
+  return await expect(btlCalculator.loanToValueText).toHaveText(loanToValue);
+}
