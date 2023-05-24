@@ -62,8 +62,8 @@ export class BTLCalculator {
   }
 
   async calculateLoanToValue(propertyValue: number, loanAmount: number) {
-    const loanToValue = (loanAmount / propertyValue) * 100
-    const roundedNumber = Math.ceil(loanToValue * 100) / 100
-    return roundedNumber.toString() + ' %'
+    const loanToValue = (loanAmount / propertyValue) * 100;
+    const roundedNumber = Math.ceil(loanToValue * 100) / 100;
+    return roundedNumber.toFixed(2) + ' %';
   }
 }

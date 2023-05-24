@@ -1,6 +1,7 @@
 import { Page, test, expect } from '@playwright/test';
 import { BTLCalculator } from '../pages/btlCalculator';
 import { ApplicationTypes } from '../pages/populator/applicationTypes';
+import { Outcomes } from '../pages/populator/outcomes';
 import { ProductTypes } from '../pages/populator/productTypes';
 
 let page: Page;
@@ -39,8 +40,8 @@ test.describe('BTL Calculator', () => {
   });
 
   test('Rental income criteria met', async () => {
-    const propertyValue = 75000
-    const loanAmount = 25000
+    const propertyValue = 75000;
+    const loanAmount = 25000;
     await btlCalculator.completeForm({
       propertyValue: propertyValue,
       loanAmount: loanAmount,
@@ -51,8 +52,37 @@ test.describe('BTL Calculator', () => {
       productRate: 50,
       taxRate: 'No',
     });
-    const loanToValue = await btlCalculator.calculateLoanToValue(propertyValue, loanAmount)
-    await expect(btlCalculator.loanToValueText).toHaveText(loanToValue)
+    const loanToValue = await btlCalculator.calculateLoanToValue(
+      propertyValue,
+      loanAmount,
+    );
+    await expect(btlCalculator.loanToValueText).toHaveText(loanToValue);
+    await expect(btlCalculator.outcomeResultText).toHaveText(
+      Outcomes.rentalIncomeMet,
+    );
+  });
+
+  test('Loan amount criteria not met', async () => {
+    const propertyValue = 100000;
+    const loanAmount = 2500;
+    await btlCalculator.completeForm({
+      propertyValue: propertyValue,
+      loanAmount: loanAmount,
+      feeAmount: 5000,
+      monthlyRentalIncome: 5000,
+      applicationType: ApplicationTypes.additionalBorrowing,
+      productType: ProductTypes.twoYearFixed,
+      productRate: 50,
+      taxRate: 'No',
+    });
+    const loanToValue = await btlCalculator.calculateLoanToValue(
+      propertyValue,
+      loanAmount,
+    );
+    await expect(btlCalculator.loanToValueText).toHaveText(loanToValue);
+    await expect(btlCalculator.outcomeResultText).toHaveText(
+      Outcomes.loanAmountNotMet,
+    );
   });
 
   /**
