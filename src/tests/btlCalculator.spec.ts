@@ -38,7 +38,6 @@ test.describe('BTL Calculator', () => {
 
   test('Complete form', async () => {
     await btlCalculator.completeForm({
-      propertyValue: 75000,
       loanAmount: 25000,
       feeAmount: 5000,
       monthlyRentalIncome: 5000,
@@ -46,14 +45,14 @@ test.describe('BTL Calculator', () => {
       productRate: 50,
       taxRate: 'No',
     });
-    await btlCalculator.page.pause()
+    await btlCalculator.page.pause();
     //add expects
   });
 
   /**
    * TODO:
-   * Create function for completing form
-   * Add extra scenarios
+   * Create function for completing form - done
+   * Add extra scenarios - https://docs.google.com/spreadsheets/d/1ideOZT2xXa55bDPA8lF7fdHxG61ob8aet7GW1emh_p4/edit#gid=0
    * Create function that will figure out calculation for each condition --- TRICKY
    * Try to figure out all the criteria
    */
