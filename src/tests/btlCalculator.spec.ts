@@ -3,6 +3,7 @@ import { BTLCalculator } from '../pages/btlCalculator';
 import { ApplicationTypes } from '../pages/populator/applicationTypes';
 import { Outcomes } from '../pages/populator/outcomes';
 import { ProductTypes } from '../pages/populator/productTypes';
+import { TaxRates } from '../pages/populator/taxRates';
 
 //https://docs.google.com/spreadsheets/d/1ideOZT2xXa55bDPA8lF7fdHxG61ob8aet7GW1emh_p4/edit#gid=0 - Decision Table
 let page: Page;
@@ -70,7 +71,7 @@ test.describe('BTL Calculator', () => {
       applicationType: ApplicationTypes.additionalBorrowing,
       productType: ProductTypes.twoYearFixed,
       productRate: 50,
-      taxRate: 'No',
+      taxRate: TaxRates.no,
     });
     await assertLoanToValue(propertyValue, loanAmount);
     await expect(btlCalculator.outcomeResultText).toHaveText(
@@ -119,7 +120,7 @@ test.describe('BTL Calculator', () => {
       applicationType: ApplicationTypes.remortgageNoBorrowing,
       productType: ProductTypes.fiveYearFixed,
       productRate: 10,
-      taxRate: 'Yes (All Applicants)',
+      taxRate: TaxRates.yes,
     });
     await assertLoanToValue(propertyValue, loanAmount);
     await expect(btlCalculator.outcomeResultText).toContainText(
@@ -136,7 +137,7 @@ test.describe('BTL Calculator', () => {
       applicationType: ApplicationTypes.porting,
       productType: ProductTypes.twoYearTracker,
       productRate: 20,
-      taxRate: 'Yes (All Applicants)',
+      taxRate: TaxRates.yes,
     });
     await expect(btlCalculator.outcomeResultText).toContainText(
       Outcomes.propertyValueNotMet,
@@ -154,7 +155,7 @@ test.describe('BTL Calculator', () => {
       applicationType: ApplicationTypes.unencumbered,
       productType: ProductTypes.tenYearFixed,
       productRate: 20,
-      taxRate: 'No',
+      taxRate: TaxRates.no,
     });
     await assertLoanToValue(propertyValue, loanAmount);
     await expect(btlCalculator.outcomeResultText).toContainText(
@@ -162,8 +163,23 @@ test.describe('BTL Calculator', () => {
     );
   });
 
-  test.skip('Maximum loan amount shown', async () => {
-    //all you need to do here is assert that the text can be seen, do not worry about the calculation for now
+  test('Maximum loan amount shown', async () => {
+    //all you need to do here is assert that the text can be seen, do not worry about the calculation for maximum loan amount for now
+    const propertyValue = 1000;
+    const loanAmount = 500000;
+    await btlCalculator.completeForm({
+      propertyValue: propertyValue,
+      loanAmount: loanAmount,
+      feeAmount: 5000,
+      monthlyRentalIncome: 1000,
+      applicationType: ApplicationTypes.porting,
+      productType: ProductTypes.twoYearFixed,
+      productRate: 50,
+      taxRate: TaxRates.yes,
+    });
+    await expect(btlCalculator.outcomeResultText).toContainText(
+      Outcomes.maximumLoanAmount,
+    );
   });
 });
 
