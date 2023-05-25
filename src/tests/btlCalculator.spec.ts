@@ -181,6 +181,23 @@ test.describe('BTL Calculator', () => {
       Outcomes.maximumLoanAmount,
     );
   });
+
+  test('Check you can click all the dropdown options', async () => {
+    for (const applicationType of Object.values(ApplicationTypes)) {
+      await btlCalculator.completeForm({applicationType: applicationType})
+      await expect(await btlCalculator.applicationTypeDropdown.innerText()).toMatch(applicationType)
+    }
+
+    for (const product of Object.values(ProductTypes)) {
+      await btlCalculator.completeForm({productType: product})
+      await expect(await btlCalculator.productTypeDropdown.innerText()).toMatch(product)
+    }
+
+    for (const taxRate of Object.values(TaxRates)) {
+      await btlCalculator.completeForm({taxRate: taxRate})
+      await expect(await btlCalculator.basicTaxRateDropdown.innerText()).toMatch(taxRate)
+    }
+  })
 });
 
 async function assertLoanToValue(propertyValue: number, loanAmount: number) {

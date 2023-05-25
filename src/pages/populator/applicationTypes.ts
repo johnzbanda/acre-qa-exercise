@@ -1,4 +1,5 @@
 export class ApplicationTypes {
+  static select = '- Select -';
   static additionalBorrowing = 'Additional Borrowing';
   static porting = 'Porting';
   static purchase = 'Purchase';
